@@ -2,17 +2,24 @@ import os
 import sys
 from PIL import Image
 from pillow_heif import register_heif_opener
+import pillow_heif
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMessageBox
 
 def convert_to_jpg(input_path, output_path):
     register_heif_opener()
     for filename in os.listdir(input_path):
-        print(filename)
         if filename.endswith('.HEIC') or filename.endswith('.heic'):
             filepath = os.path.join(input_path, filename)
-            image = Image.open(filepath)
+            heif_file = pillow_heif.read_heif(filepath)
+            image = Image.frombytes(
+                heif_file.mode,
+                heif_file.size,
+                heif_file.data,
+                "raw",
+            )
 
-            #lacking code for heif conversion
+            output_path_new = os.path.join(output_path, os.path.splitext(filename)[0] + '.jpg')
+            image.save(output_path_new)
 
 def choose_folder():
     input_path = QFileDialog.getExistingDirectory(None,'Choose a Folder')
