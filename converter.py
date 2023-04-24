@@ -1,12 +1,10 @@
 import os
-import sys
 from PIL import Image
-from pillow_heif import register_heif_opener
 import pillow_heif
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMessageBox
 
 def convert_to_jpg(input_path, output_path):
-    register_heif_opener()
+
     for filename in os.listdir(input_path):
         if filename.endswith('.HEIC') or filename.endswith('.heic'):
             filepath = os.path.join(input_path, filename)
@@ -24,7 +22,6 @@ def convert_to_jpg(input_path, output_path):
 def choose_folder():
     input_path = QFileDialog.getExistingDirectory(None,'Choose a Folder')
     return input_path
-
 
 def main():
     input_path = choose_folder()
