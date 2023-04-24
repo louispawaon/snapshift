@@ -1,28 +1,56 @@
 import os
 import pyheif
+import sys
 from PIL import Image
+from PyQt5.QtWidgets import QApplication, QFileDialog, QMessageBox
 
-input_folder = input("Enter the path to input folder: ") #Change path folder
-output_folder = "path/to/your/output/folder" #Change path folder
+def convert_to_jpg(input_path, output_path):
+    for filename in os.listdir(input_path):
+        if filename.endswith('.HEIC') or filename.endswith('.heic'):
+            filepath = os.path.join(input_path, filename)
+            with open(filepath, 'rb') as f:
+                heif_file = pyheif.read_heif(f)
+                image = Image.frombytes(
+                    heif_file.mode, 
+                    heif_file.size, 
+                    heif_file.data,
+                    "raw",
+                    heif_file.mode,
+                    heif_file.stride,
+                )
+                image.save(os.path.join(output_path, f'{os.path.splitext(filename)[0]}.jpg'), 'JPEG')
 
-for filename in os.listdir(input_folder):
-    if filename.endswith(".heic"):
-        # Load the HEIC file
-        heif_file = pyheif.read(os.path.join(input_folder, filename))
+def choose_folder():
+    app = QApplication([])
+    input_path = QFileDialog.getExistingDirectory(None,'Choose a Folder')
+    return input_path
 
-        # Convert the image data to a PIL Image object
-        image = Image.frombytes(
-            heif_file.mode,
-            heif_file.size,
-            heif_file.data,
-            "raw",
-            heif_file.mode,
-            heif_file.stride,
-        )
 
-        # Save the PIL Image object as a JPG file in the output folder
-        output_filename = os.path.splitext(filename)[0] + ".jpg"
-        output_path = os.path.join(output_folder, output_filename)
-        image.save(output_path)
+def main():
+    input_path = choose_folder()
+    if input_path:
+        output_path = os.path.join(os.path.dirname(input_path), 'converted_jpgs')
+        os.makedirs(output_path, exist_ok=True)
+        try:
+            convert_to_jpg(input_path, output_path)
+            message_box = QMessageBox()
+            message_box.setWindowTitle('Success')
+            message_box.setText('Conversion complete.')
+            message_box.setIcon(QMessageBox.Information)
+            message_box.exec_()
+        except Exception as e:
+            message_box = QMessageBox()
+            message_box.setWindowTitle('Error')
+            message_box.setText(f'An error occurred: {e}')
+            message_box.setIcon(QMessageBox.Warning)
+            message_box.exec_()
+    else:
+        message_box = QMessageBox()
+        message_box.setWindowTitle('Error')
+        message_box.setText('No folder selected.')
+        message_box.setIcon(QMessageBox.Warning)
+        message_box.exec_()
 
-        print(f"Converted {filename} to {output_filename}")
+
+if __name__ == '__main__':
+    main()
