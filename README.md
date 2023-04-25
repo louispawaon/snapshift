@@ -2,7 +2,7 @@
 converting heic files using the internet is cumbersome so i made this not-so-intuitive way of converting things
 
 # **Installation**
-To run this script, you will need to install the required libraries listed in the `requirements.txt` file (for Windows) or `requirements_ubuntu.txt `file (for Ubuntu). You can do this using pip by running the following command in your terminal:
+To run this script, you will need to install the required libraries listed in the `requirements.txt` file (for Windows) or `requirements_ubuntu.txt` file (for Ubuntu). You can do this using pip by running the following command in your terminal:
 
 ```
 pip install -r requirements.txt  # for Windows
