@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "heic-to-jpg"
+version = "0.1.0"
+description = "converting heic files is tiring using the internet, so i made one myself"
+authors = ["louispawaon <lpawaon@gmail.com>"]
+readme = "README.md"
+packages = [{include = "heic_to_jpg"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pillow = "^9.5.0"
+pillow-heif = "^0.10.1"
+pyqt5 = "^5.15.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
