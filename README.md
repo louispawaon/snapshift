@@ -2,7 +2,7 @@
 Previously *heic-to-jpg*, converting heic files using the internet is cumbersome and so i made this *now intuitive* way of converting `.heic` files to multiple image formats.
 
 # **Installation**
-1. Download the `SnapShift.exe` file
+1. Download the [`SnapShift.exe`](https://github.com/louispawaon/snapshift/releases/download/v1.0.0/SnapShift.exe) file
 2. Choose your Target Folder with the .heic images
 3. Choose your Destination Folder for the converted images
 4. Choose what image type you want your .heic file to be converted
