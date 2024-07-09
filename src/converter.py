@@ -50,7 +50,10 @@ class ConversionThread(QThread):
                     os.path.splitext(filename)[0] + f".{self.output_format.lower()}"
                 )
                 output_path_new = os.path.join(self.output_path, output_filename)
-                image.save(output_path_new, format=self.output_format)
+                if self.output_format.upper() == "JPG":
+                    image.save(output_path_new, format="JPEG")
+                else:
+                    image.save(output_path_new, format=self.output_format.upper())
                 self.progress.emit(int((i / total_files) * 100))
 
             self.finished.emit()
@@ -61,12 +64,9 @@ class ConversionThread(QThread):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("HEIC Converter")
+        self.setWindowTitle("SnapShift")
         self.setGeometry(100, 100, 600, 400)
-        self.setWindowIcon(
-            QIcon("path_to_your_icon.png")
-        )  # Replace with your icon path
-
+        self.setWindowIcon(QIcon("src/assets/icon.ico"))
         main_layout = QVBoxLayout()
 
         # Input folder selection
