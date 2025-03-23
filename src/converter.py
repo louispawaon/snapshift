@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QComboBox,
 )
-from PySide6.QtCore import Qt, QThread, Signal
+from PySide6.QtCore import QThread, Signal
 from PySide6.QtGui import QIcon
 
 
@@ -107,6 +107,14 @@ class MainWindow(QMainWindow):
         self.convert_button = QPushButton("Convert")
         self.convert_button.clicked.connect(self.start_conversion)
         self.convert_button.setEnabled(False)
+
+        # Status bar
+        self.status_bar = self.statusBar()
+        self.status_bar.showMessage("Ready")
+
+        # Add a permanent widget for file count
+        self.file_count_label = QLabel()
+        self.status_bar.addPermanentWidget(self.file_count_label)
 
         main_layout.addLayout(input_layout)
         main_layout.addLayout(output_layout)
