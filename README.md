@@ -23,11 +23,16 @@ To run this script, you will need to install the required libraries listed in th
     cd SnapShift
     python3 -m venv venv
     ```
-3. Install `requirements.txt`
+3. Run your virtual environment
+   ```
+   source venv/bin/activate # Ubuntu
+   venv/Scripts/activate # Windows
+   ``` 
+4. Install `requirements.txt`
    ```
    pip install -r requirements.txt
    ```
-4. Run the script
+5. Run the script
    ```
    cd src
    python3 converter.py
