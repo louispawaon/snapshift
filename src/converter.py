@@ -33,12 +33,26 @@ class ConversionThread(QThread):
 
     def run(self):
         try:
+            # Ensure we have read permissions on input directory
+            if not os.access(self.input_path, os.R_OK):
+                self.error.emit(f"No read permissions for directory: {self.input_path}")
+                return
+
+            # Ensure we have write permissions on output directory
+            if not os.access(self.output_path, os.W_OK):
+                self.error.emit(f"No write permissions for directory: {self.output_path}")
+                return
+
             files = [
                 f
                 for f in os.listdir(self.input_path)
                 if f.lower().endswith((".heic", ".heif"))
             ]
             total_files = len(files)
+
+            if total_files == 0:
+                self.error.emit("No HEIC/HEIF files found in the input directory")
+                return
 
             for i, filename in enumerate(files, 1):
                 filepath = os.path.join(self.input_path, filename)
@@ -120,14 +134,22 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
     def choose_input_folder(self):
-        folder = QFileDialog.getExistingDirectory(self, "Choose Input Folder")
+        folder = QFileDialog.getExistingDirectory(
+            self, 
+            "Choose Input Folder",
+            os.path.expanduser("~")  # Start from home directory
+        )
         if folder:
             self.input_path.setText(folder)
             self.update_file_list()
             self.check_convert_button()
 
     def choose_output_folder(self):
-        folder = QFileDialog.getExistingDirectory(self, "Choose Output Folder")
+        folder = QFileDialog.getExistingDirectory(
+            self, 
+            "Choose Output Folder",
+            os.path.expanduser("~")  # Start from home directory
+        )
         if folder:
             self.output_path.setText(folder)
             self.check_convert_button()
